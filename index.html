@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jelajah Jurnal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{--bg:#edf1f4;--surface:#fff;--ink:#14233a;--muted:#5a6b7d;--line:#d3dce4;--accent:#1f5fd6;--accent-ink:#fff;--oa:#157a4f;--oa-bg:#dff3e8;--chip:#e2e9f0;--bar:#9db8ec;--star:#d9930d;
+--serif:"Newsreader",Georgia,"Times New Roman",serif;--sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1824;--surface:#17222f;--ink:#e6edf5;--muted:#93a3b5;--line:#2a3a4c;--accent:#6b9cff;--accent-ink:#0b1626;--oa:#6fd3a0;--oa-bg:#173828;--chip:#223142;--bar:#3c5f9e;--star:#f0b43c}}
+*{box-sizing:border-box}html{color-scheme:light dark}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--sans)}
+.wrap{max-width:960px;margin:0 auto;padding:40px 20px 80px}
+h1{font:700 clamp(2.2rem,6vw,3.4rem)/1.05 var(--serif);margin:0 0 10px;letter-spacing:-.02em}
+.sub{color:var(--muted);margin:0 0 24px;max-width:58ch}
+.tabs{display:flex;gap:4px;margin-bottom:18px;border-bottom:1px solid var(--line)}
+.tab{font:inherit;font-weight:500;padding:10px 16px;border:0;background:none;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1px}
+.tab[aria-selected=true]{color:var(--ink);border-color:var(--accent)}
+.search{display:flex;gap:8px;margin-bottom:14px}
+.search input{flex:1;min-width:0;font:inherit;font-size:1.05rem;padding:14px 16px;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink)}
+:is(input,select,button,summary,a):focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.btn{font:inherit;font-weight:600;padding:0 22px;border:0;border-radius:10px;background:var(--accent);color:var(--accent-ink);cursor:pointer;min-height:44px}
+.btn.alt{background:var(--surface);color:var(--ink);border:1.5px solid var(--line)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.chip{font:inherit;font-size:.9rem;padding:6px 12px;border:0;border-radius:999px;background:var(--chip);color:var(--ink);cursor:pointer}
+.chip:hover{background:var(--line)}
+.filters{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center;padding:12px 0;border-block:1px solid var(--line);margin-bottom:16px;font-size:.92rem}
+.filters label{display:flex;align-items:center;gap:6px;color:var(--muted)}
+select{font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);max-width:100%}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+#status{color:var(--muted);margin:0;font-size:.92rem}
+.bar .btn{min-height:36px;padding:0 14px;font-size:.88rem}
+ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.item{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.item h2{font:700 1.3rem/1.25 var(--serif);margin:0 0 4px}
+.star{font-size:1.5rem;line-height:1;border:0;background:none;color:var(--muted);cursor:pointer;padding:2px 4px}
+.star[aria-pressed=true]{color:var(--star)}
+.pub{color:var(--muted);font-size:.92rem;margin:0 0 10px}
+.meta{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.88rem;margin:0}
+.tag{display:inline-block;font-size:.78rem;font-weight:600;padding:2px 9px;border-radius:999px;background:var(--oa-bg);color:var(--oa);margin-left:6px;vertical-align:middle}
+details{margin-top:10px}summary{cursor:pointer;color:var(--accent);font-weight:500;font-size:.92rem}
+.detail{padding-top:10px;font-size:.92rem;display:grid;gap:12px}
+.detail a{color:var(--accent)}
+.topics{display:flex;flex-wrap:wrap;gap:6px}.topics span{font-size:.8rem;background:var(--chip);padding:2px 9px;border-radius:999px}
+.detail h3{font:600 .9rem var(--sans);margin:0 0 4px}
+.chart{display:flex;align-items:flex-end;gap:4px;height:70px}
+.chart div{flex:1;background:var(--bar);border-radius:3px 3px 0 0;min-height:2px}
+.years{display:flex;gap:4px;font-size:.7rem;color:var(--muted)}.years span{flex:1;text-align:center}
+.works{display:grid;gap:8px}.works a{font-weight:500;text-decoration:none}.works a:hover{text-decoration:underline}.works small{display:block;color:var(--muted)}
+.links{display:flex;flex-wrap:wrap;gap:6px 14px}
+.more{display:block;margin:22px auto 0}.more[hidden]{display:none}
+.err{color:#b3261e}@media (prefers-color-scheme:dark){.err{color:#ff8a80}}
+footer{margin-top:40px;color:var(--muted);font-size:.85rem}footer a{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Jelajah Jurnal</h1>
+  <p class="sub">Telusuri jurnal ilmiah dari seluruh dunia berdasarkan bidang ilmu, negara, dan status open access. Data langsung dari OpenAlex.</p>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" id="t-explore" aria-selected="true">Jelajah</button>
+    <button class="tab" role="tab" id="t-fav" aria-selected="false">Favorit (<span id="favn">0</span>)</button>
+  </div>
+
+  <div id="explore">
+    <form class="search" id="form" role="search">
+      <input id="q" type="search" placeholder="Nama jurnal, kata kunci, atau ISSN" aria-label="Cari jurnal" autocomplete="off">
+      <button class="btn" type="submit">Cari</button>
+    </form>
+    <div class="chips" id="chips"></div>
+    <div class="filters">
+      <label>Bidang ilmu <select id="field"><option value="">Semua bidang</option></select></label>
+      <label>Negara <select id="country"></select></label>
+      <label>Urutkan <select id="sort">
+        <option value="cited_by_count:desc">Paling banyak disitasi</option>
+        <option value="works_count:desc">Paling banyak artikel</option>
+        <option value="summary_stats.2yr_mean_citedness:desc">Sitasi rata-rata 2 tahun</option>
+        <option value="relevance_score:desc">Paling relevan</option>
+      </select></label>
+      <label><input type="checkbox" id="oa"> Open access</label>
+      <label><input type="checkbox" id="doaj"> Terindeks DOAJ</label>
+    </div>
+  </div>
+
+  <div class="bar"><p id="status" role="status" aria-live="polite"></p><button class="btn alt" id="csv" hidden>Unduh CSV</button></div>
+  <ul id="list"></ul>
+  <button class="btn alt more" id="more" hidden>Muat lebih banyak</button>
+
+  <footer>Data bibliometrik dari <a href="https://openalex.org" target="_blank" rel="noopener">OpenAlex</a>. Peringkat SINTA tidak tersedia lewat API publik, jadi tiap jurnal punya tautan pencarian ke SINTA, Garuda, DOAJ, dan Scimago. Buka file ini di browser dengan koneksi internet.</footer>
+</div>
+
+<script>
+const API="https://api.openalex.org";
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const num=n=>(n??0).toLocaleString("id-ID");
+const FIELDS={11:"Pertanian & Biologi",12:"Seni & Humaniora",13:"Biokimia, Genetika & Biologi Molekuler",14:"Bisnis, Manajemen & Akuntansi",15:"Teknik Kimia",16:"Kimia",17:"Ilmu Komputer",18:"Ilmu Keputusan",19:"Ilmu Bumi & Planet",20:"Ekonomi, Ekonometrika & Keuangan",21:"Energi",22:"Teknik",23:"Ilmu Lingkungan",24:"Imunologi & Mikrobiologi",25:"Ilmu Material",26:"Matematika",27:"Kedokteran",28:"Neurosains",29:"Keperawatan",30:"Farmakologi & Farmasi",31:"Fisika & Astronomi",32:"Psikologi",33:"Ilmu Sosial",34:"Kedokteran Hewan",35:"Kedokteran Gigi",36:"Profesi Kesehatan"};
+const COUNTRIES={"":"Semua negara",ID:"Indonesia",MY:"Malaysia",SG:"Singapura",TH:"Thailand",IN:"India",CN:"Tiongkok",JP:"Jepang",KR:"Korea Selatan",AU:"Australia",US:"Amerika Serikat",GB:"Inggris",NL:"Belanda",DE:"Jerman",FR:"Prancis",CH:"Swiss",BR:"Brasil",TR:"Turki"};
+const CHIPS=["pendidikan","kesehatan masyarakat","ekonomi","hukum","pertanian","teknik informatika","machine learning","nursing"];
+
+$("field").insertAdjacentHTML("beforeend",Object.entries(FIELDS).map(([k,v])=>`<option value="${k}">${v}</option>`).join(""));
+$("country").innerHTML=Object.entries(COUNTRIES).map(([k,v])=>`<option value="${k}">${v}</option>`).join("");
+$("chips").innerHTML=CHIPS.map(t=>`<button type="button" class="chip">${t}</button>`).join("");
+
+let favs={};try{favs=JSON.parse(localStorage.getItem("jj_favs")||"{}")}catch(e){}
+const saveFavs=()=>{try{localStorage.setItem("jj_favs",JSON.stringify(favs))}catch(e){}$("favn").textContent=Object.keys(favs).length};
+saveFavs();
+
+let page=1,total=0,loaded=[],loading=false,mode="explore";
+const cache={};
+
+function start(){page=1;loaded=[];$("list").innerHTML="";load()}
+async function load(){
+  if(loading)return;loading=true;
+  const q=$("q").value.trim(),f=["type:journal"];
+  if($("oa").checked)f.push("is_oa:true");
+  if($("doaj").checked)f.push("is_in_doaj:true");
+  if($("country").value)f.push("country_code:"+$("country").value);
+  if($("field").value)f.push("topics.field.id:"+$("field").value);
+  let sort=$("sort").value;if(sort.startsWith("relevance")&&!q)sort="cited_by_count:desc";
+  const p=new URLSearchParams({filter:f.join(","),"per-page":20,page,sort});
+  if(q)p.set("search",q);
+  $("status").textContent="Memuat…";$("more").hidden=true;
+  try{
+    const r=await fetch(`${API}/sources?${p}`);
+    if(!r.ok)throw new Error("server membalas "+r.status);
+    const d=await r.json();total=d.meta.count;
+    loaded.push(...d.results);
+    $("list").insertAdjacentHTML("beforeend",d.results.map(card).join(""));
+    $("status").textContent=total?`Menampilkan ${num(loaded.length)} dari ${num(total)} jurnal`:"Tidak ada jurnal yang cocok. Coba kata kunci lain atau longgarkan filter.";
+    $("more").hidden=loaded.length>=total;$("csv").hidden=!loaded.length;
+  }catch(e){$("status").innerHTML=`<span class="err">Gagal memuat data (${esc(e.message)}). Periksa koneksi internet lalu coba lagi.</span>`}
+  loading=false;
+}
+function showFavs(){
+  const a=Object.values(favs);$("list").innerHTML=a.map(card).join("");$("more").hidden=true;$("csv").hidden=!a.length;
+  $("status").textContent=a.length?`${a.length} jurnal tersimpan di browser ini`:"Belum ada favorit. Tekan bintang pada jurnal untuk menyimpannya.";
+}
+function setMode(m){
+  mode=m;$("t-explore").setAttribute("aria-selected",m==="explore");$("t-fav").setAttribute("aria-selected",m==="fav");
+  $("explore").hidden=m!=="explore";
+  m==="fav"?showFavs():($("list").innerHTML=loaded.map(card).join(""),$("status").textContent=total?`Menampilkan ${num(loaded.length)} dari ${num(total)} jurnal`:"",$("more").hidden=loaded.length>=total,$("csv").hidden=!loaded.length);
+}
+
+const sid=s=>s.id.split("/").pop();
+function chart(s){
+  const y=(s.counts_by_year||[]).slice().sort((a,b)=>a.year-b.year).slice(-10);
+  if(!y.length)return"";const mx=Math.max(...y.map(v=>v.works_count),1);
+  return `<div><h3>Artikel per tahun</h3><div class="chart" role="img" aria-label="Grafik artikel per tahun">${y.map(v=>`<div style="height:${Math.max(3,v.works_count/mx*100)}%" title="${v.year}: ${num(v.works_count)} artikel"></div>`).join("")}</div><div class="years">${y.map(v=>`<span>${String(v.year).slice(2)}</span>`).join("")}</div></div>`;
+}
+function card(s){
+  const id=sid(s),c=s.summary_stats?.["2yr_mean_citedness"],issn=s.issn_l||(s.issn||[])[0]||"";
+  const tp=(s.topics||[]).slice(0,6).map(t=>`<span>${esc(t.display_name)}</span>`).join("");
+  const name=encodeURIComponent(s.display_name),key=encodeURIComponent(issn||s.display_name);
+  const links=[s.homepage_url&&`<a href="${esc(s.homepage_url)}" target="_blank" rel="noopener">Situs jurnal</a>`,
+    `<a href="https://sinta.kemdiktisaintek.go.id/journals?q=${key}" target="_blank" rel="noopener">Cari di SINTA</a>`,
+    `<a href="https://garuda.kemdiktisaintek.go.id/" target="_blank" rel="noopener">Garuda</a>`,
+    issn&&`<a href="https://doaj.org/toc/${esc(issn)}" target="_blank" rel="noopener">DOAJ</a>`,
+    `<a href="https://www.scimagojr.com/journalsearch.php?q=${key}" target="_blank" rel="noopener">Scimago</a>`,
+    `<a href="${esc(s.id)}" target="_blank" rel="noopener">OpenAlex</a>`].filter(Boolean).join("");
+  const apc=s.apc_usd?`Biaya publikasi (APC): US$ ${num(s.apc_usd)}`:(s.is_oa?"Biaya publikasi: tidak tercatat":"");
+  return `<li class="item" data-id="${id}">
+  <div class="top"><div><h2>${esc(s.display_name)}${s.is_oa?'<span class="tag">Open access</span>':""}${s.is_in_doaj?'<span class="tag">DOAJ</span>':""}</h2>
+  <p class="pub">${esc(s.host_organization_name||"Penerbit tidak tercatat")}${s.country_code?" · "+esc(COUNTRIES[s.country_code]||s.country_code):""}</p></div>
+  <button class="star" data-fav="${id}" aria-pressed="${!!favs[id]}" aria-label="Simpan ke favorit" title="Favorit">${favs[id]?"★":"☆"}</button></div>
+  <p class="meta"><span><b>${num(s.works_count)}</b> artikel</span><span><b>${num(s.cited_by_count)}</b> sitasi</span>${c!=null?`<span><b>${c.toFixed(2)}</b> sitasi rata-rata 2 tahun</span>`:""}</p>
+  <details data-src="${id}"><summary>Detail dan artikel terbaru</summary><div class="detail">
+    ${issn?`<div>ISSN: ${esc((s.issn||[issn]).join(", "))}</div>`:""}${apc?`<div>${esc(apc)}</div>`:""}
+    ${tp?`<div class="topics">${tp}</div>`:""}${chart(s)}
+    <div><h3>Artikel terbaru</h3><div class="works" data-works>Memuat…</div></div>
+    <div class="links">${links}</div></div></details></li>`;
+}
+
+document.addEventListener("click",async e=>{
+  const fb=e.target.closest("[data-fav]");
+  if(fb){const id=fb.dataset.fav,s=loaded.find(x=>sid(x)===id)||favs[id];
+    if(favs[id]){delete favs[id]}else if(s){const{x_concepts,societies,alternate_titles,...keep}=s;favs[id]=keep}
+    saveFavs();if(mode==="fav")showFavs();else{fb.setAttribute("aria-pressed",!!favs[id]);fb.textContent=favs[id]?"★":"☆"}return}
+  if(e.target.classList.contains("chip")){$("q").value=e.target.textContent;start()}
+});
+document.addEventListener("toggle",async e=>{
+  const d=e.target;if(!d.dataset?.src||!d.open)return;
+  const id=d.dataset.src,box=d.querySelector("[data-works]");
+  if(!cache[id]){try{
+    const r=await fetch(`${API}/works?filter=primary_location.source.id:${id}&sort=publication_date:desc&per-page=5&select=id,title,publication_year,doi,authorships`);
+    cache[id]=(await r.json()).results}catch(err){box.innerHTML=`<span class="err">Gagal memuat artikel.</span>`;return}}
+  box.innerHTML=cache[id].length?cache[id].map(w=>{
+    const au=(w.authorships||[]).slice(0,3).map(a=>a.author.display_name).join(", ");
+    return `<div><a href="${esc(w.doi||w.id)}" target="_blank" rel="noopener">${esc(w.title||"Tanpa judul")}</a><small>${w.publication_year||""}${au?" · "+esc(au):""}</small></div>`}).join(""):"Belum ada artikel tercatat.";
+},true);
+
+$("csv").addEventListener("click",()=>{
+  const rows=mode==="fav"?Object.values(favs):loaded;
+  const h=["Nama","Penerbit","Negara","ISSN","Artikel","Sitasi","Open access","DOAJ","Situs"];
+  const q=v=>`"${String(v??"").replace(/"/g,'""')}"`;
+  const csv=[h.map(q).join(","),...rows.map(s=>[s.display_name,s.host_organization_name,s.country_code,s.issn_l,s.works_count,s.cited_by_count,s.is_oa?"ya":"tidak",s.is_in_doaj?"ya":"tidak",s.homepage_url].map(q).join(","))].join("\n");
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["\ufeff"+csv],{type:"text/csv"}));a.download="jurnal.csv";a.click();
+});
+$("form").addEventListener("submit",e=>{e.preventDefault();start()});
+["oa","doaj","country","field","sort"].forEach(i=>$(i).addEventListener("change",start));
+$("more").addEventListener("click",()=>{page++;load()});
+$("t-explore").addEventListener("click",()=>setMode("explore"));
+$("t-fav").addEventListener("click",()=>setMode("fav"));
+start();
+</script>
+</body>
+</html>
